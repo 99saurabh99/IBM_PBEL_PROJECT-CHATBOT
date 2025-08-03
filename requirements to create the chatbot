@@ -1,0 +1,13 @@
+To build and run the AI-based book recommendation chatbot using Python and the Google Books API, there are a few basic requirements.
+First and foremost, Python must be installed on the system, preferably version 3.6 or above. 
+The chatbot uses the requests library to send HTTP requests to the Google Books API, so this module needs to be installed as well.
+It can be easily added using the command pip install requests. This makes the setup very lightweight and beginner-friendly.
+
+The chatbot can be run on any device that supports Python, including desktops, laptops, and even Android smartphones using apps like Pydroid 3 or Termux. 
+In terms of hardware, a system with at least 512 MB of RAM and minimal storage is sufficient to run this script. 
+One important requirement is an active internet connection, as the chatbot relies on real-time data fetched from the web through the Google Books API.
+The good news is that the API used in this project does not require any API key for basic use, which means users can run the chatbot freely without signing up for anything,
+  as long as their usage stays within the free limits.
+
+Optionally, if a more advanced interface is desired, such as a GUI or a web version, additional tools like Tkinter (for desktop GUI) or Flask/Streamlit (for web applications) can be used.
+However, for the basic command-line version, only Python and the requests library are needed, making this chatbot highly accessible and easy to set up.
