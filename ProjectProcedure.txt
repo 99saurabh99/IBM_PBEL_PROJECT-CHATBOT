@@ -1,0 +1,93 @@
+#1
+pip install ibm-watson
+
+#2
+from ibm_watson import AssistantV1
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+
+#3
+# Replace "YOUR_API_KEY" and "YOUR_SERVICE_URL" with your actual API key and service URL.
+authenticator = IAMAuthenticator(apikey='YOUR_API_KEY')
+assistant = AssistantV1(version='2021-06-14', authenticator=authenticator)
+assistant.set_service_url('YOUR_SERVICE_URL')
+
+
+#4
+# Define the chatbot's dialogue flow
+chatbot_data = {
+    "intents": [
+        {
+            "name": "greeting",
+            "examples": [
+                {"text": "hello"},
+                {"text": "hi"},
+                {"text": "hey"}
+            ],
+            "responses": [
+                {"text": "Hello! How can I assist you?"},
+                {"text": "Hi there! How may I help you?"}
+            ]
+        },
+        {
+            "name": "goodbye",
+            "examples": [
+                {"text": "bye"},
+                {"text": "goodbye"},
+                {"text": "see you"}
+            ],
+            "responses": [
+                {"text": "Goodbye! Have a great day."},
+                {"text": "Farewell! Feel free to return anytime."}
+            ]
+        },
+        # Add more intents and responses as needed
+    ]
+}
+
+
+#5
+# Create the chatbot
+response = assistant.create_workspace(name='My Chatbot', description='A simple chatbot', intents=chatbot_data['intents'])
+workspace_id = response.result['workspace_id']
+
+#6
+# Deploy the chatbot
+assistant.update_workspace(workspace_id=workspace_id, status='available')
+
+
+#7
+# Interact with the chatbot
+while True:
+    user_input = input("You: ")
+    response = assistant.message(workspace_id=workspace_id, input={'text': user_input})
+    chatbot_response = response.result['output']['generic'][0]['text']
+    print("Chatbot: " + chatbot_response)
+
+
+
+#8
+# Add more training data to the chatbot
+additional_intents = [
+    {
+        "name": "help",
+        "examples": [
+            {"text": "help me"},
+            {"text": "I need assistance"}
+        ],
+        "responses": [
+            {"text": "Sure, I'm here to help! How can I assist you?"}
+        ]
+    }
+]
+
+# Update the chatbot with additional intents
+chatbot_data['intents'].extend(additional_intents)
+assistant.update_workspace(workspace_id=workspace_id, intents=chatbot_data['intents'])
+
+
+
+
+
+
+# Redeploy the chatbot after updating chatbot
+assistant.update_workspace(workspace_id=workspace_id, status='available')
